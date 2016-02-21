@@ -1,13 +1,21 @@
 <script src="phaser.js"></script>
 <script type="text/javascript">
-	var game = new Phaser.Game(0, 0, PHASER.AUTO, '', { preload: preload, create: create, update: update });
+	var displayWidth = screen.width;
+	var displayHeight = screen.height;
+	var game = new Phaser.Game(displayWidth, displayHeight, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	function preload(){
 
 	}
 	function create(){
-
+		game.stage.backgroundColor = "#4488AA";
 	}
 	function update(){
 
 	}
 </script>
+<style>
+	body{
+		margin: 0;
+		padding: 0;
+	}
+</style>
