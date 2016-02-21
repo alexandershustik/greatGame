@@ -1,16 +1,68 @@
 <script src="phaser.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script type="text/javascript">
-	var displayWidth = screen.width;
-	var displayHeight = screen.height;
+	$(document).bind('touchmove', false);
+	var displayWidth = $(window).width();
+	var displayHeight = $(window).height();
 	var game = new Phaser.Game(displayWidth, displayHeight, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	function preload(){
 
 	}
 	function create(){
-		game.stage.backgroundColor = "#4488AA";
+		game.physics.startSystem(Phaser.Physics.ARCADE)
+		game.stage.backgroundColor = "#48a";
+
+		createTextures();
+
 	}
+
+
+
 	function update(){
 
+	}
+
+
+	function createTextures(){
+		var groundData = ['A'];
+		game.create.texture('ground', groundData, 6, 6, 0);
+		ground = game.add.sprite(0, displayHeight - 150, 'ground');
+    	ground.width = displayWidth;
+    	ground.height = 150;
+
+    	var playerData =['8'];
+    	game.create.texture('player',playerData);
+    	player = game.add.sprite(100, 200, 'player');
+    	player.width = 50;
+    	player.height = 50;
+
+    	var buttonLeftData = [
+	    	'FFFFFFF',
+			'FFF3FFF',
+			'FF3333F',
+			'F33333F',
+			'FF3333F',
+			'FFF3FFF',
+			'FFFFFFF'];
+		game.create.texture('buttonLeft',buttonLeftData);
+    	buttonLeft = game.add.sprite(50, displayHeight - 100, 'buttonLeft');
+    	buttonLeft.width = 50;
+    	buttonLeft.height = 50;
+
+    	var buttonRightData = [
+			'FFFFFFF',
+			'FFF3FFF',
+			'F3333FF',
+			'F33333F',
+			'F3333FF',
+			'FFF3FFF',
+			'FFFFFFF'];
+		game.create.texture('buttonRight',buttonRightData);
+    	buttonRight = game.add.sprite(110, displayHeight - 100, 'buttonRight');
+    	buttonRight.width = 50;
+    	buttonRight.height = 50;
+
+    	return false;
 	}
 </script>
 <style>
