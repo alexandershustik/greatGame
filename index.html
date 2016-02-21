@@ -4,6 +4,8 @@
 	$(document).bind('touchmove', false);
 	var displayWidth = $(window).width();
 	var displayHeight = $(window).height();
+	var right = false;
+	var left = false;
 	var game = new Phaser.Game(displayWidth, displayHeight, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	function preload(){
 
@@ -24,14 +26,27 @@
 	    player.body.gravity.y = 300;
 	    player.body.collideWorldBounds = true;
 
+	    buttonright.events.onInputOver.add(function(){right=true;});
+	    buttonright.events.onInputOut.add(function(){right=false;});
+	    buttonright.events.onInputDown.add(function(){right=true;});
+	    buttonright.events.onInputUp.add(function(){right=false;});
 
+	    buttonleft.events.onInputOver.add(function(){left=true;});
+	    buttonleft.events.onInputOut.add(function(){left=false;});
+	    buttonleft.events.onInputDown.add(function(){left=true;});
+	    buttonleft.events.onInputUp.add(function(){left=false;});
 
 	}
 
-
-
 	function update(){
 		game.physics.arcade.collide(player, ground);
+
+		if (right) {
+        	player.x++;
+    	} 
+    	if (left) {
+        	player.x--;
+    	} 
 	}
 
 
@@ -57,9 +72,8 @@
 			'FFF3FFF',
 			'FFFFFFF'];
 		game.create.texture('buttonLeft',buttonLeftData);
-    	buttonLeft = game.add.sprite(50, displayHeight - 100, 'buttonLeft');
-    	buttonLeft.width = 50;
-    	buttonLeft.height = 50;
+    	buttonLeft = game.add.sprite('buttonLeft');
+    	buttonleft = game.add.button(50, displayHeight - 100, 'buttonLeft', null, this, 0, 1, 0, 1);
 
     	var buttonRightData = [
 			'FFFFFFF',
@@ -70,9 +84,8 @@
 			'FFF3FFF',
 			'FFFFFFF'];
 		game.create.texture('buttonRight',buttonRightData);
-    	buttonRight = game.add.sprite(110, displayHeight - 100, 'buttonRight');
-    	buttonRight.width = 50;
-    	buttonRight.height = 50;
+    	buttonRight = game.add.sprite('buttonRight');
+		buttonright = game.add.button(110, displayHeight - 100, 'buttonRight', null, this, 0, 1, 0, 1);
 
     	return false;
 	}
