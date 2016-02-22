@@ -1,9 +1,11 @@
 <script src="phaser.js"></script>
 <script src="jquery.min.js"></script>
 <script type="text/javascript">
+	$(document).bind('touchmove', false);
 	var displayWidth = $(window).width();
 	var displayHeight = $(window).height();
-
+var left = false;
+var player, ground;
 	var game = new Phaser.Game(displayWidth, displayHeight, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	function preload(){
 		game.load.image('ground', 'assets/ground.png');
@@ -13,14 +15,25 @@
 	}
 	function create(){
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		game.stage.backgroundColor = "#4488AA";
-		var ground = game.add.sprite(0, displayHeight - 150, 'ground');
+		game.stage.backgroundColor = "#48a";
+		ground = game.add.sprite(0, displayHeight - 150, 'ground');
 		ground.width = displayWidth;
 		ground.height = 150;
-		var player = game.add.sprite(displayWidth / 2 - 25, displayHeight - 300, 'player');
+		player = game.add.sprite(displayWidth / 2 - 25, displayHeight - 300, 'player');
+
+		ground.enableBody = true;
+		game.physics.arcade.enable(ground);
+		ground.body.immovable = true;
+
+		game.physics.arcade.enable(player);
+
+		player.body.bounce.y = 1;
+		player.body.gravity.y = 300;   
+		player.body.collideWorldBounds = true;
+
 	}
 	function update(){
-
+ 		game.physics.arcade.collide(player, ground);
 	}
 </script>
 <style>
