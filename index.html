@@ -1,13 +1,23 @@
 <script src="phaser.js"></script>
+<script src="jquery.min.js"></script>
 <script type="text/javascript">
-	var displayWidth = screen.width;
-	var displayHeight = screen.height;
+	var displayWidth = $(window).width();
+	var displayHeight = $(window).height();
+
 	var game = new Phaser.Game(displayWidth, displayHeight, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	function preload(){
-
+		game.load.image('ground', 'assets/ground.png');
+		game.load.image('player', 'assets/player.png');
+		game.load.image('arrowLeft', 'assets/arrowLeft.png');
+		game.load.image('arrowRight', 'assets/arrowRight.png');
 	}
 	function create(){
+		game.physics.startSystem(Phaser.Physics.ARCADE);
 		game.stage.backgroundColor = "#4488AA";
+		var ground = game.add.sprite(0, displayHeight - 150, 'ground');
+		ground.width = displayWidth;
+		ground.height = 150;
+		var player = game.add.sprite(displayWidth / 2 - 25, displayHeight - 300, 'player');
 	}
 	function update(){
 
