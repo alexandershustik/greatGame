@@ -4,36 +4,80 @@
 	$(document).bind('touchmove', false);
 	var displayWidth = $(window).width();
 	var displayHeight = $(window).height();
-var left = false;
-var player, ground;
+	var player, ground;
+	var left = false;
+	var right = false;
+	var cat;
+
 	var game = new Phaser.Game(displayWidth, displayHeight, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	function preload(){
 		game.load.image('ground', 'assets/ground.png');
 		game.load.image('player', 'assets/player.png');
 		game.load.image('arrowLeft', 'assets/arrowLeft.png');
 		game.load.image('arrowRight', 'assets/arrowRight.png');
+		game.load.spritesheet('cat', 'assets/cat.png', 150, 150);
 	}
 	function create(){
 		game.physics.startSystem(Phaser.Physics.ARCADE);
 		game.stage.backgroundColor = "#48a";
-		ground = game.add.sprite(0, displayHeight - 150, 'ground');
-		ground.width = displayWidth;
-		ground.height = 150;
-		player = game.add.sprite(displayWidth / 2 - 25, displayHeight - 300, 'player');
+		ground = game.add.sprite(0, displayHeight - 70, 'ground');
+		player = game.add.sprite(150, game.world.height - 450, 'cat');
 
+		//Animation
+		player.animations.add('walk', [0, 1, 2, 3, 4, 5], 10, true);
+		
+		// Physics
 		ground.enableBody = true;
 		game.physics.arcade.enable(ground);
 		ground.body.immovable = true;
-
 		game.physics.arcade.enable(player);
-
-		player.body.bounce.y = 1;
-		player.body.gravity.y = 300;   
+		player.body.bounce.y = 0.2;
+		player.body.gravity.y = 1000;   
 		player.body.collideWorldBounds = true;
+
+		// Arrows
+	    buttonRight = game.add.button(displayWidth - 60, displayHeight - 60, 'arrowRight', null, this, 0, 1, 0, 1);
+	    buttonRight.fixedToCamera = true;
+	    buttonRight.events.onInputOver.add(function(){right=true;});
+	    buttonRight.events.onInputOut.add(function(){right=false;});
+	    buttonRight.events.onInputDown.add(function(){right=true;});
+	    buttonRight.events.onInputUp.add(function(){right=false;});
+
+	    buttonLeft = game.add.button(10, displayHeight - 60, 'arrowLeft', null, this, 0, 1, 0, 1);
+	    buttonLeft.fixedToCamera = true;
+	    buttonLeft.events.onInputOver.add(function(){left=true;});
+	    buttonLeft.events.onInputOut.add(function(){left=false;});
+	    buttonLeft.events.onInputDown.add(function(){left=true;});
+	    buttonLeft.events.onInputUp.add(function(){left=false;});
+
+
 
 	}
 	function update(){
  		game.physics.arcade.collide(player, ground);
+		// walk player
+	    if (player.alive)
+	    {
+	        player.body.velocity.x = 0;
+
+	        if (left)
+	        {
+				player.scale.x = -1;
+				player.animations.play('walk');
+	            player.body.velocity.x = -300;
+	        }
+	        else if (right)
+	        {
+	        	player.scale.x = 1;
+	        	player.animations.play('walk');
+	            player.body.velocity.x = 300;
+	        }
+	        else
+	        {
+		        player.animations.stop();
+		        player.frame = 1;
+		    }
+	    }	
 	}
 </script>
 <style>
