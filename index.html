@@ -7,25 +7,26 @@
 	var player, ground;
 	var left = false;
 	var right = false;
-	var cat;
 
 	var game = new Phaser.Game(displayWidth, displayHeight, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	function preload(){
 		game.load.image('ground', 'assets/ground.png');
-		game.load.image('player', 'assets/player.png');
-		game.load.image('arrowLeft', 'assets/arrowLeft.png');
-		game.load.image('arrowRight', 'assets/arrowRight.png');
-		game.load.spritesheet('cat', 'assets/cat.png', 150, 150);
+		game.load.image('arrow', 'assets/arrowLeft.png');
+		game.load.spritesheet('dude', 'assets/dude.png', 130, 220);
 	}
 	function create(){
 		game.physics.startSystem(Phaser.Physics.ARCADE);
-		game.stage.backgroundColor = "#48a";
-		ground = game.add.sprite(0, displayHeight - 70, 'ground');
-		player = game.add.sprite(150, game.world.height - 450, 'cat');
+		game.stage.backgroundColor = "#baa";
+		//var groundLayer = game.add.group();
+		//ground = groundLayer.create(0, displayHeight - 100, 'ground');
+		ground = game.add.tileSprite(0, displayHeight-100, displayWidth, displayHeight, 'ground');
+		player = game.add.sprite(150, game.world.height - 450, 'dude');
+
+		//Ground platform
 
 		//Animation
 		player.animations.add('walk', [0, 1, 2, 3, 4, 5], 10, true);
-		
+
 		// Physics
 		ground.enableBody = true;
 		game.physics.arcade.enable(ground);
@@ -36,14 +37,17 @@
 		player.body.collideWorldBounds = true;
 
 		// Arrows
-	    buttonRight = game.add.button(displayWidth - 60, displayHeight - 60, 'arrowRight', null, this, 0, 1, 0, 1);
+
+	    buttonRight = game.add.button(60, displayHeight - 60, 'arrow', null, this, 0, 1, 0, 1);
+	    buttonRight.anchor.setTo(1, 1);
+	    buttonRight.angle = 180;
 	    buttonRight.fixedToCamera = true;
 	    buttonRight.events.onInputOver.add(function(){right=true;});
 	    buttonRight.events.onInputOut.add(function(){right=false;});
 	    buttonRight.events.onInputDown.add(function(){right=true;});
 	    buttonRight.events.onInputUp.add(function(){right=false;});
 
-	    buttonLeft = game.add.button(10, displayHeight - 60, 'arrowLeft', null, this, 0, 1, 0, 1);
+	    buttonLeft = game.add.button(10, displayHeight - 60, 'arrow', null, this, 0, 1, 0, 1);
 	    buttonLeft.fixedToCamera = true;
 	    buttonLeft.events.onInputOver.add(function(){left=true;});
 	    buttonLeft.events.onInputOut.add(function(){left=false;});
@@ -75,7 +79,7 @@
 	        else
 	        {
 		        player.animations.stop();
-		        player.frame = 1;
+		        player.frame = 0;
 		    }
 	    }	
 	}
